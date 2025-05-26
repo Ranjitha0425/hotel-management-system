@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel Management System - Login</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/supabase-js/2.38.0/umd/supabase.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .login-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            width: 100%;
+            max-width: 450px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+        }
+
+        .hotel-logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .hotel-logo h1 {
+            color: #333;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .hotel-logo p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .form-tabs {
+            display: flex;
+            margin-bottom: 30px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 5px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 12px;
+            background: transparent;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            color: #666;
+        }
+
+        .tab-btn.active {
+            background: white;
+            color: #667eea;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 15px 50px 15px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-control.error {
+            border-color: #e53e3e;
+            box-shadow: 0 0 0 3px rgba(229, 62, 62, 0.1);
+        }
+
+        .form-control.success {
+            border-color: #38a169;
+            box-shadow: 0 0 0 3px rgba(56, 161, 105, 0.1);
+        }
+
+        .input-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            color: #999;
+        }
+
+        .password-toggle {
+            cursor: pointer;
+            color: #667eea;
+        }
+
+        .error-message,
+        .success-message {
+            margin-top: 8px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .error-message {
+            color: #e53e3e;
+        }
+
+        .success-message {
+            color: #38a169;
+        }
+
+        .password-strength {
+            margin-top: 8px;
+        }
+
+        .strength-bar {
+            height: 4px;
+            background: #e0e0e0;
+            border-radius: 2px;
+            overflow: hidden;
+            margin-bottom: 5px;
+        }
+
+        .strength-fill {
+            height: 100%;
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+
+        .strength-text {
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .remember-forgot {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            font-size: 14px;
+        }
+
+        .checkbox-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .checkbox-wrapper input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: #667eea;
+        }
+
+        .forgot-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .forgot-link:hover {
+            text-decoration: underline;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .btn-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .spinner {
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .form-section {
+            display: none;
+        }
+
+        .form-section.active {
+            display: block;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+        }
+
+        .alert-success {
+            background: #f0fff4;
+            color: #38a169;
+            border: 1px solid #c6f6d5;
+        }
+
+        .alert-error {
+            background: #fed7d7;
+            color: #e53e3e;
+            border: 1px solid #feb2b2;
+        }
+
+        .role-selector {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .role-option {
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .role-option:hover {
+            border-color: #667eea;
+        }
+
+        .role-option.selected {
+            border-color: #667eea;
+            background: #f7faff;
+            color: #667eea;
+        }
+
+        .role-option h4 {
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        .role-option p {
+            font-size: 12px;
+            color: #666;
+        }
+
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 30px 20px;
+                margin: 10px;
+            }
+
+            .hotel-logo h1 {
+                font-size: 24px;
+            }
+
+            .role-selector {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login-container">
+        <div class="hotel-logo">
+            <h1>🏨 Grand Hotel</h1>
+            <p>Management System</p>
+        </div>
+
+        <div class="form-tabs">
+            <button class="tab-btn active" onclick="switchTab('login')">Login</button>
+            <button class="tab-btn" onclick="switchTab('register')">Register</button>
+        </div>
+
+        <div id="alertContainer"></div>
+
+        <!-- Login Form -->
+        <div id="loginSection" class="form-section active">
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="loginEmail">Email Address</label>
+                    <div class="input-wrapper">
+                        <input type="email" id="loginEmail" class="form-control" placeholder="Enter your email">
+                        <svg class="input-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207">
+                            </path>
+                        </svg>
+                    </div>
+                    <div class="error-message" id="loginEmailError"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <div class="input-wrapper">
+                        <input type="password" id="loginPassword" class="form-control"
+                            placeholder="Enter your password">
+                        <svg class="input-icon password-toggle" onclick="togglePassword('loginPassword')" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z">
+                            </path>
+                        </svg>
+                    </div>
+                    <div class="error-message" id="loginPasswordError"></div>
+                </div>
+
+                <div class="remember-forgot">
+                    <div class="checkbox-wrapper">
+                        <input type="checkbox" id="rememberMe">
+                        <label for="rememberMe">Remember me</label>
+                    </div>
+                    <a href="#" class="forgot-link">Forgot Password?</a>
+                </div>
+
+                <button type="submit" class="btn-primary" id="loginBtn">
+                    <div class="btn-content">
+                        <span>Sign In</span>
+                    </div>
+                </button>
+            </form>
+        </div>
+
+        <!-- Register Form -->
+        <div id="registerSection" class="form-section">
+            <form id="registerForm">
+                <div class="form-group">
+                    <label>Select Your Role</label>
+                    <div class="role-selector">
+                        <div class="role-option" onclick="selectRole('admin')" id="adminRole">
+                            <h4>👨‍💼 Admin</h4>
+                            <p>Full system access</p>
+                        </div>
+                        <div class="role-option" onclick="selectRole('staff')" id="staffRole">
+                            <h4>👩‍💻 Staff</h4>
+                            <p>Front desk operations</p>
+                        </div>
+                        <div class="role-option selected" onclick="selectRole('manager')" id="managerRole">
+                            <h4>🏨 Manager</h4>
+                            <p>Department management</p>
+                        </div>
+                        <div class="role-option" onclick="selectRole('housekeeping')" id="housekeepingRole">
+                            <h4>🧹 Housekeeping</h4>
+                            <p>Room maintenance</p>
+                        </div>
+                    </div>
+                    <div class="error-message" id="roleError"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="registerName">Full Name</label>
+                    <div class="input-wrapper">
+                        <input type="text" id="registerName" class="form-control" placeholder="Enter your full name">
+                        <svg class="input-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                        </svg>
+                    </div>
+                    <div class="error-message" id="registerNameError"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="registerEmail">Email Address</label>
+                    <div class="input-wrapper">
+                        <input type="email" id="registerEmail" class="form-control" placeholder="Enter your email">
+                        <svg class="input-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207">
+                            </path>
+                        </svg>
+                    </div>
+                    <div class="error-message" id="registerEmailError"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="registerPassword">Password</label>
+                    <div class="input-wrapper">
+                        <input type="password" id="registerPassword" class="form-control"
+                            placeholder="Create a strong password">
+                        <svg class="input-icon password-toggle" onclick="togglePassword('registerPassword')" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z">
+                            </path>
+                        </svg>
+                    </div>
+                    <div class="password-strength">
+                        <div class="strength-bar">
+                            <div class="strength-fill" id="strengthFill"></div>
+                        </div>
+                        <div class="strength-text" id="strengthText">Password strength</div>
+                    </div>
+                    <div class="error-message" id="registerPasswordError"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <div class="input-wrapper">
+                        <input type="password" id="confirmPassword" class="form-control"
+                            placeholder="Confirm your password">
+                        <svg class="input-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
+                            </path>
+                        </svg>
+                    </div>
+                    <div class="error-message" id="confirmPasswordError"></div>
+                </div>
+
+                <button type="submit" class="btn-primary" id="registerBtn">
+                    <div class="btn-content">
+                        <span>Create Account</span>
+                    </div>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Supabase (Replace with your actual Supabase URL and key)
+        const SUPABASE_URL = 'https://your-project.supabase.co';
+        const SUPABASE_ANON_KEY = 'your-anon-key';
+
+        // For demo purposes, we'll simulate Supabase
+        const supabase = {
+            auth: {
+                signUp: async ({ email, password, options }) => {
+                    // Simulate API call
+                    await new Promise(resolve => setTimeout(resolve, 1500));
+
+                    if (email === 'test@error.com') {
+                        return { error: { message: 'User already registered' } };
+                    }
+
+                    // Store user data in memory for demo
+                    const userData = {
+                        id: Date.now(),
+                        email: email,
+                        user_metadata: options?.data || {}
+                    };
+
+                    localStorage.setItem('hotel_user', JSON.stringify(userData));
+
+                    return {
+                        data: { user: userData, session: { access_token: 'demo-token' } },
+                        error: null
+                    };
+                },
+                signInWithPassword: async ({ email, password }) => {
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+
+                    if (email === 'wrong@email.com') {
+                        return { error: { message: 'Invalid login credentials' } };
+                    }
+
+                    const userData = {
+                        id: Date.now(),
+                        email: email
+                    };
+
+                    return {
+                        data: { user: userData, session: { access_token: 'demo-token' } },
+                        error: null
+                    };
+                }
+            },
+            from: (table) => ({
+                insert: async (data) => {
+                    await new Promise(resolve => setTimeout(resolve, 500));
+
+                    const stored = JSON.parse(localStorage.getItem('hotel_staff') || '[]');
+                    const newRecord = { id: Date.now(), ...data, created_at: new Date().toISOString() };
+                    stored.push(newRecord);
+                    localStorage.setItem('hotel_staff', JSON.stringify(stored));
+
+                    return { data: [newRecord], error: null };
+                },
+                select: () => ({
+                    eq: (column, value) => ({
+                        single: async () => {
+                            const stored = JSON.parse(localStorage.getItem('hotel_staff') || '[]');
+                            const found = stored.find(item => item[column] === value);
+                            return { data: found || null, error: null };
+                        }
+                    })
+                })
+            })
+        };
+
+        // Global variables
+        let selectedRole = 'manager';
+        let isLoading = false;
+
+        // Tab switching
+        function switchTab(tab) {
+            const loginSection = document.getElementById('loginSection');
+            const registerSection = document.getElementById('registerSection');
+            const tabBtns = document.querySelectorAll('.tab-btn');
+
+            tabBtns.forEach(btn => btn.classList.remove('active'));
+
+            if (tab === 'login') {
+                loginSection.classList.add('active');
+                registerSection.classList.remove('active');
+                tabBtns[0].classList.add('active');
+            } else {
+                loginSection.classList.remove('active');
+                registerSection.classList.add('active');
+                tabBtns[1].classList.add('active');
+            }
+
+            clearAllErrors();
+        }
+
+        // Role selection
+        function selectRole(role) {
+            selectedRole = role;
+            document.querySelectorAll('.role-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            document.getElementById(role + 'Role').classList.add('selected');
+            clearError('roleError');
+        }
+
+        // Password visibility toggle
+        function togglePassword(inputId) {
+            const input = document.getElementById(inputId);
+            const icon = input.nextElementSibling;
+
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.innerHTML = `
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L12 12m-3.122-3.122l4.243 4.243M12 12l3.121 3.121m3.121-3.121L21 21"></path>
+                `;
+            } else {
+                input.type = 'password';
+                icon.innerHTML = `
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                `;
+            }
+        }
+
+        // Validation functions
+        function validateEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
+        function validatePassword(password) {
+            return {
+                length: password.length >= 8,
+                uppercase: /[A-Z]/.test(password),
+                lowercase: /[a-z]/.test(password),
+                number: /\d/.test(password),
+                special: /[!@#$%^&*(),.?":{}|<>]/.test(password)
+            };
+        }
+
+        function getPasswordStrength(password) {
+            const checks = validatePassword(password);
+            const score = Object.values(checks).filter(Boolean).length;
+
+            if (score < 3) return { strength: 'weak', color: '#e53e3e', text: 'Weak' };
+            if (score < 4) return { strength: 'medium', color: '#f56500', text: 'Medium' };
+            if (score === 4) return { strength: 'good', color: '#38a169', text: 'Good' };
+            return { strength: 'strong', color: '#38a169', text: 'Strong' };
+        }
+
+        function validateName(name) {
+            return name.trim().length >= 2 && /^[a-zA-Z\s]+$/.test(name.trim());
+        }
+
+        // Error handling
+        function showError(fieldId, message) {
+            const errorElement = document.getElementById(fieldId);
+            const inputElement = document.getElementById(fieldId.replace('Error', ''));
+
+            if (errorElement) {
+                errorElement.innerHTML = `
+                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                    </svg>
+                    ${message}
+                `;
+                errorElement.style.display = 'flex';
+            }
+
+            if (inputElement) {
+                inputElement.classList.add('error');
+                inputElement.classList.remove('success');
+            }
+        }
+
+        function showSuccess(fieldId) {
+            const errorElement = document.getElementById(fieldId);
+            const inputElement = document.getElementById(fieldId.replace('Error', ''));
+
+            if (errorElement) {
+                errorElement.style.display = 'none';
+            }
+
+            if (inputElement) {
+                inputElement.classList.remove('error');
+                inputElement.classList.add('success');
+            }
+        }
+
+        function clearError(fieldId) {
+            const errorElement = document.getElementById(fieldId);
+            const inputElement = document.getElementById(fieldId.replace('Error', ''));
+
+            if (errorElement) {
+                errorElement.style.display = 'none';
+            }
+
+            if (inputElement) {
+                inputElement.classList.remove('error', 'success');
+            }
+        }
+
+        function clearAllErrors() {
+            const errorElements = document.querySelectorAll('.error-message');
+            const inputElements = document.querySelectorAll('.form-control');
+
+            errorElements.forEach(el => el.style.display = 'none');
+            inputElements.forEach(el => el.classList.remove('error', 'success'));
+        }
+
+        // Alert functions
+        function showAlert(message, type = 'error') {
+            const alertContainer = document.getElementById('alertContainer');
+            const alertClass = type === 'success' ? 'alert-success' : 'alert-error';
+            const icon = type === 'success' ?
+                '<svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>' :
+                '<svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>';
+
+            alertContainer.innerHTML = `
+                <div class="alert ${alertClass}">
+                    ${icon}
+                    <span>${message}</span>
+                </div>
+            `;
+
+            setTimeout(() => {
+                alertContainer.innerHTML = '';
+            }, 5000);
+        }
+
+        // Loading state management
+        function setLoading(buttonId, isLoadingState) {
+            const button = document.getElementById(buttonId);
+            const btnContent = button.querySelector('.btn-content');
+
+            if (isLoadingState) {
+                button.disabled = true;
+                isLoading = true;
+                btnContent.innerHTML = `
+                    <svg class="spinner" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,19a8,8,0,1,1,8-8A8,8,0,0,1,12,20Z" opacity=".25"/>
+                        <path d="M12,4a8,8,0,0,1,7.89,6.7A1.53,1.53,0,0,0,21.38,12h0a1.5,1.5,0,0,0,1.48-1.75,11,11,0,0,0-21.72,0A1.5,1.5,0,0,0,2.62,12h0a1.53,1.53,0,0,0,1.49-1.3A8,8,0,0,1,12,4Z"/>
+                    </svg>
+                    <span>Processing...</span>
+                `;
+            } else {
+                button.disabled = false;
+                isLoading = false;
+                const originalText = buttonId === 'loginBtn' ? 'Sign In' : 'Create Account';
+                btnContent.innerHTML = `<span>${originalText}</span>`;
+            }
+        }
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', function () {
+            // Password strength indicator
+            const registerPassword = document.getElementById('registerPassword');
+            const strengthFill = document.getElementById('strengthFill');
+            const strengthText = document.getElementById('strengthText');
+
+            registerPassword.addEventListener('input', function () {
+                const password = this.value;
+                if (password.length === 0) {
+                    strengthFill.style.width = '0%';
+                    strengthText.textContent = 'Password strength';
+                    strengthText.style.color = '#666';
+                    return;
+                }
+
+                const strength = getPasswordStrength(password);
+                const widthMap = {
+                    'weak': '25%',
+                    'medium': '50%',
+                    'good': '75%',
+                    'strong': '100%'
+                };
+
+                strengthFill.style.width = widthMap[strength.strength];
+                strengthFill.style.background = strength.color;
+                strengthText.textContent = strength.text;
+                strengthText.style.color = strength.color;
+            });
+
+            // Real-time validation
+            const inputs = [
+                { id: 'loginEmail', validator: validateEmail, errorId: 'loginEmailError', message: 'Please enter a valid email address' },
+                { id: 'loginPassword', validator: (val) => val.length >= 6, errorId: 'loginPasswordError', message: 'Password must be at least 6 characters' },
+                { id: 'registerName', validator: validateName, errorId: 'registerNameError', message: 'Please enter a valid name (letters and spaces only, min 2 characters)' },
+                { id: 'registerEmail', validator: validateEmail, errorId: 'registerEmailError', message: 'Please enter a valid email address' },
+                { id: 'registerPassword', validator: (val) => Object.values(validatePassword(val)).filter(Boolean).length >= 3, errorId: 'registerPasswordError', message: 'Password must be at least 8 characters with uppercase, lowercase, number, and special character' },
+                { id: 'confirmPassword', validator: (val) => val === document.getElementById('registerPassword').value && val.length > 0, errorId: 'confirmPasswordError', message: 'Passwords do not match' }
+            ];
+
+            inputs.forEach(({ id, validator, errorId, message }) => {
+                const input = document.getElementById(id);
+                if (input) {
+                    input.addEventListener('blur', function () {
+                        if (this.value.trim() === '') {
+                            clearError(errorId);
+                            return;
+                        }
+
+                        if (validator(this.value)) {
+                            showSuccess(errorId);
+                        } else {
+                            showError(errorId, message);
+                        }
+                    });
+
+                    input.addEventListener('input', function () {
+                        if (this.classList.contains('error') || this.classList.contains('success')) {
+                            if (this.value.trim() === '') {
+                                clearError(errorId);
+                                return;
+                            }
+
+                            if (validator(this.value)) {
+                                showSuccess(errorId);
+                            } else {
+                                showError(errorId, message);
+                            }
+                        }
+                    });
+                }
+            });
+
+            // Form submissions
+            document.getElementById('loginForm').addEventListener('submit', handleLogin);
+            document.getElementById('registerForm').addEventListener('submit', handleRegister);
+        });
+
+        // Login handler
+        async function handleLogin(e) {
+            e.preventDefault();
+
+            if (isLoading) return;
+
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value;
+
+            // Validation
+            let hasErrors = false;
+
+            if (!email) {
+                showError('loginEmailError', 'Email is required');
+                hasErrors = true;
+            } else if (!validateEmail(email)) {
+                showError('loginEmailError', 'Please enter a valid email address');
+                hasErrors = true;
+            } else {
+                showSuccess('loginEmailError');
+            }
+
+            if (!password) {
+                showError('loginPasswordError', 'Password is required');
+                hasErrors = true;
+            } else if (password.length < 6) {
+                showError('loginPasswordError', 'Password must be at least 6 characters');
+                hasErrors = true;
+            } else {
+                showSuccess('loginPasswordError');
+            }
+
+            if (hasErrors) return;
+
+            setLoading('loginBtn', true);
+
+            try {
+                const { data, error } = await supabase.auth.signInWithPassword({
+                    email: email,
+                    password: password
+                });
+
+                if (error) {
+                    showAlert(error.message, 'error');
+                } else {
+                    showAlert('Login successful! Redirecting to dashboard...', 'success');
+
+                    // Store login session
+                    const loginData = {
+                        user: data.user,
+                        loginTime: new Date().toISOString(),
+                        rememberMe: document.getElementById('rememberMe').checked
+                    };
+
+                    if (loginData.rememberMe) {
+                        localStorage.setItem('hotel_login_session', JSON.stringify(loginData));
+                    } else {
+                        sessionStorage.setItem('hotel_login_session', JSON.stringify(loginData));
+                    }
+
+                    // Simulate redirect to dashboard
+                    setTimeout(() => {
+                        showAlert('Welcome to Hotel Management Dashboard!', 'success');
+                        // In real app: window.location.href = '/dashboard';
+                    }, 2000);
+                }
+            } catch (error) {
+                showAlert('An unexpected error occurred. Please try again.', 'error');
+                console.error('Login error:', error);
+            } finally {
+                setLoading('loginBtn', false);
+            }
+        }
+
+        // Register handler
+        async function handleRegister(e) {
+            e.preventDefault();
+
+            if (isLoading) return;
+
+            const name = document.getElementById('registerName').value.trim();
+            const email = document.getElementById('registerEmail').value.trim();
+            const password = document.getElementById('registerPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            // Validation
+            let hasErrors = false;
+
+            if (!selectedRole) {
+                showError('roleError', 'Please select your role');
+                hasErrors = true;
+            } else {
+                clearError('roleError');
+            }
+
+            if (!name) {
+                showError('registerNameError', 'Full name is required');
+                hasErrors = true;
+            } else if (!validateName(name)) {
+                showError('registerNameError', 'Please enter a valid name (letters and spaces only, min 2 characters)');
+                hasErrors = true;
+            } else {
+                showSuccess('registerNameError');
+            }
+
+            if (!email) {
+                showError('registerEmailError', 'Email is required');
+                hasErrors = true;
+            } else if (!validateEmail(email)) {
+                showError('registerEmailError', 'Please enter a valid email address');
+                hasErrors = true;
+            } else {
+                showSuccess('registerEmailError');
+            }
+
+            const passwordChecks = validatePassword(password);
+            const passwordScore = Object.values(passwordChecks).filter(Boolean).length;
+
+            if (!password) {
+                showError('registerPasswordError', 'Password is required');
+                hasErrors = true;
+            } else if (passwordScore < 3) {
+                showError('registerPasswordError', 'Password must be stronger (at least 8 characters with uppercase, lowercase, number, and special character)');
+                hasErrors = true;
+            } else {
+                showSuccess('registerPasswordError');
+            }
+
+            if (!confirmPassword) {
+                showError('confirmPasswordError', 'Please confirm your password');
+                hasErrors = true;
+            } else if (password !== confirmPassword) {
+                showError('confirmPasswordError', 'Passwords do not match');
+                hasErrors = true;
+            } else {
+                showSuccess('confirmPasswordError');
+            }
+
+            if (hasErrors) return;
+
+            setLoading('registerBtn', true);
+
+            try {
+                // Create user account
+                const { data: authData, error: authError } = await supabase.auth.signUp({
+                    email: email,
+                    password: password,
+                    options: {
+                        data: {
+                            full_name: name,
+                            role: selectedRole
+                        }
+                    }
+                });
+
+                if (authError) {
+                    showAlert(authError.message, 'error');
+                    return;
+                }
+
+                // Store additional user data in hotel_staff table
+                const { data: staffData, error: staffError } = await supabase
+                    .from('hotel_staff')
+                    .insert([
+                        {
+                            user_id: authData.user.id,
+                            full_name: name,
+                            email: email,
+                            role: selectedRole,
+                            department: getDepartmentByRole(selectedRole),
+                            status: 'active',
+                            hire_date: new Date().toISOString().split('T')[0],
+                            created_at: new Date().toISOString()
+                        }
+                    ]);
+
+                if (staffError) {
+                    console.error('Staff data error:', staffError);
+                    // Continue even if staff data insertion fails
+                }
+
+                showAlert('Account created successfully! Please check your email for verification.', 'success');
+
+                // Store registration data for tracking
+                const registrationData = {
+                    user: authData.user,
+                    staff_info: staffData ? staffData[0] : null,
+                    registrationTime: new Date().toISOString()
+                };
+
+                localStorage.setItem('hotel_registration_data', JSON.stringify(registrationData));
+
+                // Reset form and switch to login
+                setTimeout(() => {
+                    document.getElementById('registerForm').reset();
+                    selectRole('manager'); // Reset to default role
+                    switchTab('login');
+                    showAlert('You can now log in with your credentials', 'success');
+                }, 2000);
+
+            } catch (error) {
+                showAlert('An unexpected error occurred during registration. Please try again.', 'error');
+                console.error('Registration error:', error);
+            } finally {
+                setLoading('registerBtn', false);
+            }
+        }
+
+        // Helper function to get department by role
+        function getDepartmentByRole(role) {
+            const departmentMap = {
+                'admin': 'Administration',
+                'manager': 'Management',
+                'staff': 'Front Desk',
+                'housekeeping': 'Housekeeping'
+            };
+            return departmentMap[role] || 'General';
+        }
+
+        // Initialize default role selection
+        selectRole('manager');
+
+        // Auto-fill demo data (for testing purposes)
+        function fillDemoData() {
+            if (document.getElementById('loginSection').classList.contains('active')) {
+                document.getElementById('loginEmail').value = 'demo@grandhotel.com';
+                document.getElementById('loginPassword').value = 'Demo123!';
+            } else {
+                document.getElementById('registerName').value = 'John Doe';
+                document.getElementById('registerEmail').value = 'john.doe@grandhotel.com';
+                document.getElementById('registerPassword').value = 'SecurePass123!';
+                document.getElementById('confirmPassword').value = 'SecurePass123!';
+            }
+        }
+
+        // Add demo button (hidden by default, can be shown for testing)
+        const demoButton = document.createElement('button');
+        demoButton.textContent = 'Fill Demo Data';
+        demoButton.style.position = 'fixed';
+        demoButton.style.bottom = '20px';
+        demoButton.style.right = '20px';
+        demoButton.style.padding = '10px';
+        demoButton.style.background = '#667eea';
+        demoButton.style.color = 'white';
+        demoButton.style.border = 'none';
+        demoButton.style.borderRadius = '5px';
+        demoButton.style.cursor = 'pointer';
+        demoButton.style.fontSize = '12px';
+        demoButton.style.display = 'none'; // Hidden by default
+        demoButton.onclick = fillDemoData;
+        document.body.appendChild(demoButton);
+
+        // Show demo button on double-click (for development/testing)
+        document.addEventListener('dblclick', function () {
+            demoButton.style.display = demoButton.style.display === 'none' ? 'block' : 'none';
+        });
+
+        // Session management
+        function checkExistingSession() {
+            const sessionData = localStorage.getItem('hotel_login_session') || sessionStorage.getItem('hotel_login_session');
+            if (sessionData) {
+                try {
+                    const session = JSON.parse(sessionData);
+                    const loginTime = new Date(session.loginTime);
+                    const now = new Date();
+                    const hoursDiff = (now - loginTime) / (1000 * 60 * 60);
+
+                    // Session expires after 24 hours for "remember me", 8 hours otherwise
+                    const maxHours = session.rememberMe ? 24 : 8;
+
+                    if (hoursDiff < maxHours) {
+                        showAlert(`Welcome back! You're already logged in as ${session.user.email}`, 'success');
+                        // In real app: redirect to dashboard
+                        return true;
+                    } else {
+                        // Session expired
+                        localStorage.removeItem('hotel_login_session');
+                        sessionStorage.removeItem('hotel_login_session');
+                    }
+                } catch (error) {
+                    console.error('Session check error:', error);
+                }
+            }
+            return false;
+        }
+
+        // Check for existing session on page load
+        window.addEventListener('load', function () {
+            checkExistingSession();
+        });
+
+        // Prevent form submission on Enter key in password strength checking
+        document.getElementById('registerPassword').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                document.getElementById('confirmPassword').focus();
+            }
+        });
+
+        // Additional security: Clear sensitive data on page unload
+        window.addEventListener('beforeunload', function () {
+            // Clear any temporary sensitive data
+            const tempInputs = document.querySelectorAll('input[type="password"]');
+            tempInputs.forEach(input => {
+                if (!document.getElementById('rememberMe')?.checked) {
+                    input.value = '';
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

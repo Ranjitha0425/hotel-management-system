@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hotel Food Menu</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 1em;
+            text-align: center;
+        }
+
+        nav {
+            background-color: #34495e;
+            padding: 0.5em;
+            text-align: center;
+        }
+
+        nav a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .menu-section {
+            max-width: 1200px;
+            margin: 2em auto;
+            padding: 0 1em;
+        }
+
+        .category {
+            margin-bottom: 3em;
+        }
+
+        .category h2 {
+            border-bottom: 2px solid #2c3e50;
+            padding-bottom: 0.5em;
+            color: #2c3e50;
+        }
+
+        .food-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .food-item {
+            background: white;
+            padding: 1em;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            width: calc(33% - 20px);
+            box-sizing: border-box;
+            transition: transform 0.3s;
+        }
+
+        .food-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .food-item img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .food-info {
+            margin-top: 10px;
+        }
+
+        .food-info h3 {
+            margin: 0.2em 0;
+            color: #34495e;
+        }
+
+        .food-info p {
+            margin: 0.2em 0;
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .food-info span {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 0.5em;
+        }
+
+        .food-info button {
+            background-color: #27ae60;
+            color: white;
+            padding: 0.5em 1em;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .cart {
+            background-color: #fff;
+            max-width: 400px;
+            margin: 2em auto;
+            padding: 1em;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .cart h3 {
+            margin-top: 0;
+            color: #2c3e50;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .cart-total {
+            font-weight: bold;
+            text-align: right;
+            margin-top: 1em;
+        }
+
+        .checkout-btn {
+            display: block;
+            width: 100%;
+            padding: 0.5em;
+            background-color: #e67e22;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            margin-top: 1em;
+            cursor: pointer;
+        }
+
+        footer {
+            background-color: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 1em 0;
+            margin-top: 3em;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>EliteStay Hotel</h1>
+        <p>Available Food Items</p>
+    </header>
+
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="room.html">Rooms</a>
+        <a href="food.html">Food</a>
+        <a href="about.html">About</a>
+    </nav>
+
+    <section class="menu-section">
+        <div class="category">
+            <h2>Breakfast</h2>
+            <div class="food-list">
+                <div class="food-item">
+                    <img src="/images/OIP (4).webp" alt="Pancakes">
+                    <div class="food-info">
+                        <h3>Pancakes</h3>
+                        <p>Fluffy pancakes served with syrup.</p>
+                        <span>₹120</span>
+                        <button onclick="addToCart('Pancakes', 120)">Add to Cart</button>
+                    </div>
+                </div>
+                <div class="food-item">
+                    <img src="/images/download (1).webp" alt="Omelette">
+                    <div class="food-info">
+                        <h3>Omelette</h3>
+                        <p>Egg omelette with herbs and cheese.</p>
+                        <span>₹100</span>
+                        <button onclick="addToCart('Omelette', 100)">Add to Cart</button>
+                    </div>
+                </div>
+                <div class="food-item">
+                    <img src="/images/OIP (5).webp" alt="Idli Sambar">
+                    <div class="food-info">
+                        <h3>Idli Sambar</h3>
+                        <p>South Indian delicacy with chutney.</p>
+                        <span>₹90</span>
+                        <button onclick="addToCart('Idli Sambar', 90)">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="category">
+            <h2>Lunch & Dinner</h2>
+            <div class="food-list">
+                <div class="food-item">
+                    <img src="/images/OIP (7).webp" alt="Biryani">
+                    <div class="food-info">
+                        <h3>Biryani</h3>
+                        <p>Spicy rice dish with raita and salad.</p>
+                        <span>₹180</span>
+                        <button onclick="addToCart('Biryani', 180)">Add to Cart</button>
+                    </div>
+                </div>
+                <div class="food-item">
+                    <img src="/images/OIP (2).jpg" alt="Veg Thali">
+                    <div class="food-info">
+                        <h3>Veg Thali</h3>
+                        <p>Assorted vegetarian dishes with rice & roti.</p>
+                        <span>₹150</span>
+                        <button onclick="addToCart('Veg Thali', 150)">Add to Cart</button>
+                    </div>
+                </div>
+                <div class="food-item">
+                    <img src="/images/OSK.jpg"alt="Chicken Curry">
+                    <div class="food-info">
+                        <h3>Chicken Curry</h3>
+                        <p>Spiced chicken cooked in curry gravy.</p>
+                        <span>₹190</span>
+                        <button onclick="addToCart('Chicken Curry', 190)">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="category">
+            <h2>Snacks & Drinks</h2>
+            <div class="food-list">
+                <div class="food-item">
+                    <img src="/images/OSK (1).jpg" alt="Samosa">
+                    <div class="food-info">
+                        <h3>Samosa</h3>
+                        <p>Crispy fried pastry with spicy filling.</p>
+                        <span>₹40</span>
+                        <button onclick="addToCart('Samosa', 40)">Add to Cart</button>
+                    </div>
+                </div>
+                <div class="food-item">
+                    <img src="/images/OIP (7).webp" alt="Coffee">
+                    <div class="food-info">
+                        <h3>Coffee</h3>
+                        <p>Hot brewed coffee to refresh your day.</p>
+                        <span>₹60</span>
+                        <button onclick="addToCart('Coffee', 60)">Add to Cart</button>
+                    </div>
+                </div>
+                <div class="food-item">
+                    <img src="/images/download (2).webp" alt="Fruit Juice">
+                    <div class="food-info">
+                        <h3>Fruit Juice</h3>
+                        <p>Freshly squeezed seasonal juice.</p>
+                        <span>₹70</span>
+                        <button onclick="addToCart('Fruit Juice', 70)">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cart">
+        <h3>Your Cart</h3>
+        <div id="cart-items"></div>
+        <div class="cart-total" id="cart-total">Total: ₹0</div>
+        <button class="checkout-btn">Checkout</button>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 EliteStay Hotel. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        let cart = [];
+
+        function addToCart(name, price) {
+            const item = cart.find(i => i.name === name);
+            if (item) {
+                item.quantity += 1;
+            } else {
+                cart.push({ name, price, quantity: 1 });
+            }
+            renderCart();
+        }
+
+        function removeFromCart(name) {
+            cart = cart.filter(i => i.name !== name);
+            renderCart();
+        }
+
+        function renderCart() {
+            const cartItems = document.getElementById('cart-items');
+            const cartTotal = document.getElementById('cart-total');
+            cartItems.innerHTML = '';
+
+            let total = 0;
+            cart.forEach(item => {
+                total += item.price * item.quantity;
+                cartItems.innerHTML += `
+          <div class="cart-item">
+            <span>${item.name} x ${item.quantity}</span>
+            <span>₹${item.price * item.quantity}</span>
+            <button onclick="removeFromCart('${item.name}')">Remove</button>
+          </div>
+        `;
+            });
+
+            cartTotal.innerText = `Total: ₹${total}`;
+        }
+    </script>
+</body>
+
+</html>

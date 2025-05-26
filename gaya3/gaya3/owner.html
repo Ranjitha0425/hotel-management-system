@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Owner Details - Gayathri Hotels</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        header {
+            background-color: #2c3e50;
+            padding: 20px;
+            color: white;
+            text-align: center;
+            font-size: 24px;
+        }
+
+        nav {
+            background-color: #34495e;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            padding: 15px 0;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 8px 16px;
+            transition: background 0.3s ease;
+        }
+
+        nav a:hover {
+            background-color: #1abc9c;
+            border-radius: 5px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #2c3e50;
+        }
+
+        form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        textarea {
+            resize: vertical;
+            height: 100px;
+        }
+
+        .full-width {
+            grid-column: span 2;
+        }
+
+        .btn-submit {
+            margin-top: 30px;
+            padding: 12px 20px;
+            font-size: 16px;
+            border: none;
+            background-color: #1abc9c;
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .btn-submit:hover {
+            background-color: #16a085;
+        }
+
+        @media (max-width: 768px) {
+            form {
+                grid-template-columns: 1fr;
+            }
+
+            .full-width {
+                grid-column: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>Owner Management - Gayathri Hotels</header>
+    <nav>
+        <a href="welcome.html">🏠 Home</a>
+        <a href="index.html">📊 Dashboard</a>
+        <a href="room.html">🛏 Rooms</a>
+        <a href="food.html">🍽 Food</a>
+    </nav>
+
+    <div class="container">
+        <h2>Owner Details Form</h2>
+        <form>
+            <div class="form-group">
+                <label for="ownerName">Full Name</label>
+                <input type="text" id="ownerName" placeholder="Enter owner's full name">
+            </div>
+
+            <div class="form-group">
+                <label for="ownerEmail">Email</label>
+                <input type="email" id="ownerEmail" placeholder="owner@example.com">
+            </div>
+
+            <div class="form-group">
+                <label for="ownerPhone">Phone Number</label>
+                <input type="tel" id="ownerPhone" placeholder="+91-9876543210">
+            </div>
+
+            <div class="form-group">
+                <label for="ownerAadhar">Aadhar Number</label>
+                <input type="text" id="ownerAadhar" placeholder="XXXX-XXXX-XXXX">
+            </div>
+
+            <div class="form-group">
+                <label for="ownerAddress">Address</label>
+                <textarea id="ownerAddress" placeholder="Enter full residential address..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="ownerPAN">PAN Card Number</label>
+                <input type="text" id="ownerPAN" placeholder="ABCDE1234F">
+            </div>
+
+            <div class="form-group full-width">
+                <label for="ownerBio">Bio / Notes</label>
+                <textarea id="ownerBio" placeholder="Additional notes about the owner..."></textarea>
+            </div>
+
+            <div class="form-group full-width">
+                <button class="btn-submit" type="submit">Save Owner Details</button>
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Make a Reservation - NYC Bistro</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        header {
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #d4af37;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-item {
+            margin-left: 1.5rem;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: #d4af37;
+        }
+
+        .hero {
+            height: 40vh;
+            background-image: url('/api/placeholder/1200/400');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            padding: 2rem;
+        }
+
+        .hero-title {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero-description {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+
+        .reservation-section {
+            padding: 4rem 0;
+        }
+
+        .reservation-container {
+            display: flex;
+            gap: 3rem;
+        }
+
+        .reservation-form {
+            flex: 2;
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .reservation-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .info-card {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-title {
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background-color: #d4af37;
+            color: white;
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            background-color: #c4a030;
+        }
+
+        .info-title {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .info-list {
+            list-style: none;
+        }
+
+        .info-list li {
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .info-icon {
+            margin-right: 0.5rem;
+            color: #d4af37;
+            font-weight: bold;
+        }
+
+        .faq-section {
+            padding: 4rem 0;
+            background-color: #f9f9f9;
+        }
+
+        .faq-item {
+            margin-bottom: 1.5rem;
+            background-color: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .faq-question {
+            font-size: 1.2rem;
+            margin-bottom: 0.8rem;
+            color: #333;
+        }
+
+        footer {
+            background-color: #333;
+            color: white;
+            padding: 3rem 0;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section ul li a {
+            color: #ddd;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section ul li a:hover {
+            color: #d4af37;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-icon {
+            color: white;
+            font-size: 1.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .social-icon:hover {
+            color: #d4af37;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            margin-top: 2rem;
+            border-top: 1px solid #444;
+        }
+
+        .required {
+            color: #d4af37;
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .nav-menu {
+                margin-top: 1rem;
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .nav-item {
+                margin: 0.5rem 0;
+                margin-left: 0;
+            }
+
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .reservation-container {
+                flex-direction: column;
+            }
+
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <div class="logo">NYC BISTRO</div>
+                <ul class="nav-menu">
+                    <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+                    <li class="nav-item"><a href="index.html#about" class="nav-link">About</a></li>
+                    <li class="nav-item"><a href="index.html#menu" class="nav-link">Menu</a></li>
+                    <li class="nav-item"><a href="rooms.html" class="nav-link">Rooms</a></li>
+                    <li class="nav-item"><a href="reservations.html" class="nav-link">Reservations</a></li>
+                    <li class="nav-item"><a href="index.html#contact" class="nav-link">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">Make a Reservation</h1>
+            <p class="hero-description">Join us for an unforgettable dining experience in the heart of NYC</p>
+        </div>
+    </section>
+
+    <section class="reservation-section">
+        <div class="container">
+            <div class="reservation-container">
+                <div class="reservation-form">
+                    <h2 class="section-title">Reserve Your Table</h2>
+                    <form id="reservation-form" action="#" method="POST">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="date">Date <span class="required">*</span></label>
+                                <input type="date" id="date" name="date" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="time">Time <span class="required">*</span></label>
+                                <select id="time" name="time" required>
+                                    <option value="">Select a time</option>
+                                    <option value="17:00">5:00 PM</option>
+                                    <option value="17:30">5:30 PM</option>
+                                    <option value="18:00">6:00 PM</option>
+                                    <option value="18:30">6:30 PM</option>
+                                    <option value="19:00">7:00 PM</option>
+                                    <option value="19:30">7:30 PM</option>
+                                    <option value="20:00">8:00 PM</option>
+                                    <option value="20:30">8:30 PM</option>
+                                    <option value="21:00">9:00 PM</option>
+                                    <option value="21:30">9:30 PM</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="party-size">Party Size <span class="required">*</span></label>
+                            <select id="party-size" name="party-size" required>
+                                <option value="">Select party size</option>
+                                <option value="1">1 person</option>
+                                <option value="2">2 people</option>
+                                <option value="3">3 people</option>
+                                <option value="4">4 people</option>
+                                <option value="5">5 people</option>
+                                <option value="6">6 people</option>
+                                <option value="7">7 people</option>
+                                <option value="8">8 people</option>
+                                <option value="large">More than 8 people</option>
+                            </select>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="first-name">First Name <span class="required">*</span></label>
+                                <input type="text" id="first-name" name="first-name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="last-name">Last Name <span class="required">*</span></label>
+                                <input type="text" id="last-name" name="last-name" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="email">Email <span class="required">*</span></label>
+                                <input type="email" id="email" name="email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Phone Number <span class="required">*</span></label>
+                                <input type="tel" id="phone" name="phone" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="occasion">Special Occasion</label>
+                            <select id="occasion" name="occasion">
+                                <option value="">Select an occasion (optional)</option>
+                                <option value="birthday">Birthday</option>
+                                <option value="anniversary">Anniversary</option>
+                                <option value="engagement">Engagement</option>
+                                <option value="business">Business Dinner</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="requests">Special Requests</label>
+                            <textarea id="requests" name="requests"
+                                placeholder="Dietary restrictions, seating preferences, etc."></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Confirm Reservation</button>
+                    </form>
+                </div>
+
+                <div class="reservation-info">
+                    <div class="info-card">
+                        <h3 class="info-title">Reservation Policy</h3>
+                        <ul class="info-list">
+                            <li>
+                                <span class="info-icon">•</span>
+                                <span>Reservations can be made up to 60 days in advance</span>
+                            </li>
+                            <li>
+                                <span class="info-icon">•</span>
+                                <span>For parties of more than 8 people, please call us directly</span>
+                            </li>
+                            <li>
+                                <span class="info-icon">•</span>
+                                <span>Confirmation will be sent to your email</span>
+                            </li>
+                            <li>
+                                <span class="info-icon">•</span>
+                                <span>Please arrive within 15 minutes of your reservation time</span>
+                            </li>
+                            <li>
+                                <span class="info-icon">•</span>
+                                <span>Cancellations should be made at least 24 hours in advance</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="info-card">
+                        <h3 class="info-title">Contact Us</h3>
+                        <ul class="info-list">
+                            <li>
+                                <span class="info-icon">📞</span>
+                                <span>(212) 555-1234</span>
+                            </li>
+                            <li>
+                                <span class="info-icon">✉️</span>
+                                <span>reservations@nycbistro.com</span>
+                            </li>
+                            <li>
+                                <span class="info-icon">📍</span>
+                                <span>123 Fifth Avenue, New York, NY 10001</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="faq-section">
+        <div class="container">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+
+            <div class="faq-item">
+                <h3 class="faq-question">Do you have a dress code?</h3>
+                <p>We recommend smart casual attire. While we don't strictly enforce a dress code, we ask that guests
+                    refrain from wearing athletic wear, beachwear, or overly casual attire.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3 class="faq-question">Can I request a specific table?</h3>
+                <p>We do our best to accommodate seating preferences. Please include your request in the "Special
+                    Requests" section of the reservation form, though we cannot guarantee specific tables.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3 class="faq-question">Is there a time limit for dining?</h3>
+                <p>We typically allow 2 hours for parties of 2-4 and 2.5 hours for larger parties. If you anticipate
+                    needing more time, please let us know in advance.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3 class="faq-question">Do you accommodate dietary restrictions?</h3>
+                <p>Yes, our chefs are happy to accommodate most dietary restrictions and allergies. Please note these in
+                    the "Special Requests" section when making your reservation.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3 class="faq-question">What is your cancellation policy?</h3>
+                <p>We require cancellations to be made at least 24 hours in advance. Late cancellations or no-shows may
+                    be subject to a fee of $25 per person.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>NYC BISTRO</h3>
+                    <p>123 Fifth Avenue<br>New York, NY 10001<br>United States</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Opening Hours</h3>
+                    <p>Monday - Thursday: 5 PM - 10 PM<br>
+                        Friday - Saturday: 5 PM - 11 PM<br>
+                        Sunday: 5 PM - 9 PM</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="index.html#about">About</a></li>
+                        <li><a href="index.html#menu">Menu</a></li>
+                        <li><a href="rooms.html">Rooms</a></li>
+                        <li><a href="reservations.html">Reservations</a></li>
+                        <li><a href="index.html#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Us</h3>
+                    <p>Phone: (212) 555-1234<br>
+                        Email: info@nycbistro.com</p>
+                    <div class="social-icons">
+                        <a href="#" class="social-icon">FB</a>
+                        <a href="#" class="social-icon">IG</a>
+                        <a href="#" class="social-icon">TW</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 NYC Bistro. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Basic form validation
+        document.getElementById('reservation-form').addEventListener('submit', function (event) {
+            event.preventDefault();
+            // Here you would typically send the form data to your server
+            alert('Thank you! Your reservation request has been received. We will send a confirmation to your email shortly.');
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>About Us - Gayathri Hotels</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: #f7f9fc;
+            color: #333;
+        }
+
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 28px;
+        }
+
+        nav {
+            background-color: #34495e;
+            padding: 10px 0;
+            text-align: center;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            color: #1abc9c;
+        }
+
+        .hero {
+            background-image: url("https://images.unsplash.com/photo-1611892440504-42a792e24d32");
+            background-size: cover;
+            background-position: center;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.7);
+            font-size: 36px;
+        }
+
+        .section {
+            padding: 60px 10%;
+        }
+
+        .section h2 {
+            text-align: center;
+            font-size: 32px;
+            margin-bottom: 30px;
+            color: #2c3e50;
+        }
+
+        .section p {
+            font-size: 18px;
+            line-height: 1.6;
+            text-align: center;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .gallery img {
+            width: 100%;
+            border-radius: 12px;
+            height: 200px;
+            object-fit: cover;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .reviews {
+            background-color: #ffffff;
+            padding: 60px 10%;
+        }
+
+        .review-card {
+            background-color: #f9f9f9;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .review-card p {
+            font-style: italic;
+        }
+
+        .review-card h4 {
+            margin-top: 10px;
+            text-align: right;
+            font-weight: normal;
+            color: #555;
+        }
+
+        footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 30px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>About Us - Gayathri Hotels</header>
+
+    <nav>
+        <a href="welcome.html">Home</a>
+        <a href="index.html">Dashboard</a>
+        <a href="room.html">Rooms</a>
+        <a href="food.html">Food</a>
+        <a href="owner.html">Owner</a>
+    </nav>
+
+    <div class="hero">Welcome to Luxury</div>
+
+    <section class="section">
+        <h2>Who We Are</h2>
+        <p>
+            Gayathri Hotels is a premium 5-star luxury hospitality brand known for elegance, comfort, and excellent
+            service.
+            Since our founding in 2010, we’ve grown into a symbol of royal hospitality across India. Our mission is
+            simple:
+            give every guest a world-class stay they will always remember.
+        </p>
+    </section>
+
+    <section class="section">
+        <h2>Explore Our Spaces</h2>
+        <div class="gallery">
+            <img src="/images/download (3).webp"alt="Luxury Suite">
+            <img src="/images/download (4).webp" alt="Pool Area">
+            <img src="/images/OIP (15).webp" alt="Lobby">
+            <img src="/images/OIP (16).webp" alt="Restaurant">
+            <img src="/images/executive-lounge-03-hyperion-hotel-leipzig-3000x1687.jpg" alt="Executive Lounge">
+        </div>
+    </section>
+
+    <section class="reviews">
+        <h2>Guest Reviews</h2>
+
+        <div class="review-card">
+            <p>"Absolutely unforgettable! The room was stunning, the staff were extremely professional, and the food was
+                delicious. Highly recommend it!"</p>
+            <h4>— Rakesh K., Bengaluru</h4>
+        </div>
+
+        <div class="review-card">
+            <p>"We hosted a business conference here and everything was flawless — from room service to conference
+                amenities. 10/10."</p>
+            <h4>— Ananya P., Hyderabad</h4>
+        </div>
+
+        <div class="review-card">
+            <p>"We stayed here for our honeymoon, and Gayathri Hotels made it truly special with personalized touches.
+                Thank you!"</p>
+            <h4>— Sneha & Arjun, Pune</h4>
+        </div>
+
+    </section>
+
+    <footer>
+        &copy; 2025 Gayathri Hotels. All Rights Reserved. 
+    </footer>
+
+</body>
+
+</html>

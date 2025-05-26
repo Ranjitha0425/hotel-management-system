@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Details</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .staff-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .staff-card {
+            background: #fff;
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .staff-card img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            margin-bottom: 15px;
+        }
+
+        .staff-card h3 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .staff-card p {
+            color: #777;
+            font-size: 14px;
+        }
+
+        .manager {
+            grid-column: span 3;
+            background-color: #f8d7da;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>Meet Our Staff</h1>
+
+        <!-- Staff Grid -->
+        <div class="staff-grid">
+            <!-- Manager -->
+            <div class="staff-card manager">
+                <img src="/images/5.jpg" alt="Manager">
+                <h3>John Doe</h3>
+                <p><strong>Manager</strong></p>
+                <p>John is responsible for overseeing the hotel's operations and ensuring everything runs smoothly.</p>
+            </div>
+
+            <!-- Staff Members -->
+            <div class="staff-card">
+                <img src="/images/OIP (13).webp" alt="Staff 1">
+                <h3>Jane Smith</h3>
+                <p><strong>Receptionist</strong></p>
+                <p>Jane greets guests, checks them in, and provides information about the hotel services.</p>
+            </div>
+
+            <div class="staff-card">
+                <img src="/images/OIP (12).webp" alt="Staff 2">
+                <h3>Mark Lee</h3>
+                <p><strong>Chef</strong></p>
+                <p>Mark prepares meals in our kitchen, creating delicious dishes for our guests to enjoy.</p>
+            </div>
+
+            <div class="staff-card">
+                <img src="/images/OIP (13).webp" alt="Staff 3">
+                <h3>Lisa Green</h3>
+                <p><strong>Housekeeper</strong></p>
+                <p>Lisa ensures that the rooms and common areas are clean and well-maintained.</p>
+            </div>
+
+            <div class="staff-card">
+                <img src="/images/OIP (8).webp" alt="Staff 4">
+                <h3>Michael Brown</h3>
+                <p><strong>Security Officer</strong></p>
+                <p>Michael is responsible for ensuring the safety and security of the hotel's guests and staff.</p>
+            </div>
+
+            <div class="staff-card">
+                <img src="/images/OIP (14).webp" alt="Staff 5">
+                <h3>Amy White</h3>
+                <p><strong>Event Coordinator</strong></p>
+                <p>Amy organizes and coordinates events, from weddings to corporate meetings, ensuring a seamless
+                    experience.</p>
+            </div>
+
+            <div class="staff-card">
+                <img src="/images/OIP.jpg" alt="Staff 6">
+                <h3>Chris Johnson</h3>
+                <p><strong>Bartender</strong></p>
+                <p>Chris mixes drinks and provides excellent service at the hotel bar, ensuring guests have a great
+                    time.</p>
+            </div>
+
+            <div class="staff-card">
+                <img src="/images/OIP (11).webp" alt="Staff 7">
+                <h3>Sarah Harris</h3>
+                <p><strong>Concierge</strong></p>
+                <p>Sarah assists guests with booking tours, making restaurant reservations, and recommending local
+                    attractions.</p>
+            </div>
+
+            <div class="staff-card">
+                <img src="/images/pic.jpg" alt="Staff 8">
+                <h3>David Martin</h3>
+                <p><strong>Maintenance</strong></p>
+                <p>David handles any repairs and maintenance issues, ensuring everything in the hotel works properly.
+                </p>
+            </div>
+
+            <div class="staff-card">
+                <img src="/images/pic2.jpg" alt="Staff 9">
+                <h3>Eva Williams</h3>
+                <p><strong>Guest Relations</strong></p>
+                <p>Eva interacts with guests to ensure they are satisfied with their stay and handles any complaints.
+                </p>
+            </div>
+
+            <div class="staff-card">
+                <img src="/images/pic3.jpg" alt="Staff 10">
+                <h3>James Taylor</h3>
+                <p><strong>Marketing Specialist</strong></p>
+                <p>James works on promoting the hotel, handling social media, and creating marketing campaigns.</p>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

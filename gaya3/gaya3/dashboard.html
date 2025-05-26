@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Hotel Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Basic Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: #2d3436;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        nav {
+            margin-top: 10px;
+        }
+
+        nav a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+            font-size: 1.2rem;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        /* Dashboard Layout */
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 30px;
+            padding: 20px;
+            margin-top: 30px;
+        }
+
+        /* Card Styling */
+        .card {
+            background-color: #ffffff;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease-in-out;
+            height: 180px;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+        }
+
+        .card h3 {
+            font-size: 2rem;
+            color: #34495e;
+        }
+
+        .card p {
+            font-size: 1.6rem;
+            color: #1abc9c;
+        }
+
+        /* Chart Section */
+        .charts {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 30px;
+        }
+
+        .chart {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        footer {
+            background-color: #2d3436;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        footer p {
+            font-size: 1.2rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+
+            .charts {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>Hotel Royal Palace Dashboard</h1>
+        <nav>
+            <a href="index.html">Dashboard</a>
+            <a href="room.html">Rooms</a>
+            <a href="food.html">Food</a>
+            <a href="billing.html">Billing</a>
+            <a href="records.html">Records</a>
+        </nav>
+    </header>
+
+    <section class="dashboard">
+        <!-- Summary Cards Section -->
+        <div class="card">
+            <h3>Total Bookings</h3>
+            <p>345</p>
+        </div>
+        <div class="card">
+            <h3>Total Revenue</h3>
+            <p>₹75,450</p>
+        </div>
+        <div class="card">
+            <h3>Available Rooms</h3>
+            <p>112</p>
+        </div>
+        <div class="card">
+            <h3>Food Orders</h3>
+            <p>682</p>
+        </div>
+        <div class="card">
+            <h3>Total Guests</h3>
+            <p>1250</p>
+        </div>
+        <div class="card">
+            <h3>Staff on Duty</h3>
+            <p>18</p>
+        </div>
+    </section>
+
+    <section class="charts">
+        <!-- Pie Chart Section -->
+        <div class="chart">
+            <h3>Food Order Distribution</h3>
+            <canvas id="foodPieChart"></canvas>
+        </div>
+
+        <!-- Bar Chart Section -->
+        <div class="chart">
+            <h3>Revenue by Room Type</h3>
+            <canvas id="roomRevenueBarChart"></canvas>
+        </div>
+    </section>
+
+    <footer>
+        <p>Contact us: info@hotelroyalpalace.com | +91-9876543210</p>
+    </footer>
+
+    <script>
+        // Data for Pie Chart (Food Order Breakdown)
+        const foodPieData = {
+            labels: ['Paneer Butter Masala', 'Chicken Biryani', 'Cheese Pizza', 'Masala Dosa', 'Spring Rolls', 'Pasta', 'Burger', 'French Fries', 'Vegetable Soup', 'Fruit Salad'],
+            datasets: [{
+                data: [70, 150, 30, 40, 20, 35, 25, 50, 18, 10],
+                backgroundColor: ['#ff5733', '#33ff57', '#3357ff', '#f1c40f', '#8e44ad', '#2ecc71', '#f39c12', '#3498db', '#1abc9c', '#9b59b6'],
+            }]
+        };
+
+        // Data for Bar Chart (Revenue by Room Type)
+        const revenueBarData = {
+            labels: ['Single Room', 'Double Room', 'Suite', 'Deluxe Room', 'Luxury Suite'],
+            datasets: [{
+                label: 'Revenue (₹)',
+                data: [25000, 20000, 18000, 22000, 35000],
+                backgroundColor: '#3498db',
+                borderColor: '#2980b9',
+                borderWidth: 1
+            }]
+        };
+
+        // Pie Chart Setup
+        const pieChartCtx = document.getElementById('foodPieChart').getContext('2d');
+        const foodPieChart = new Chart(pieChartCtx, {
+            type: 'pie',
+            data: foodPieData,
+        });
+
+        // Bar Chart Setup
+        const barChartCtx = document.getElementById('roomRevenueBarChart').getContext('2d');
+        const roomRevenueBarChart = new Chart(barChartCtx, {
+            type: 'bar',
+            data: revenueBarData,
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

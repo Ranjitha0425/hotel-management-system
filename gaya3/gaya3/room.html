@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dining Rooms & Event Spaces - NYC Bistro</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        header {
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #d4af37;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-item {
+            margin-left: 1.5rem;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: #d4af37;
+        }
+
+        .hero {
+            height: 60vh;
+            background-image: url('/api/placeholder/1200/800');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            padding: 2rem;
+        }
+
+        .hero-title {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero-description {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 0 0.5rem;
+        }
+
+        .btn-primary {
+            background-color: #d4af37;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #c4a030;
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            border: 2px solid #d4af37;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(212, 175, 55, 0.1);
+        }
+
+        .section {
+            padding: 4rem 0;
+        }
+
+        .section-light {
+            background-color: #fff;
+        }
+
+        .section-dark {
+            background-color: #f9f9f9;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            font-size: 2rem;
+            color: #333;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            margin-bottom: 3rem;
+            font-size: 1.2rem;
+            color: #777;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Rooms Categories */
+        .category-tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .category-tab {
+            padding: 0.8rem 1.5rem;
+            margin: 0 0.5rem 1rem 0.5rem;
+            background-color: #f5f5f5;
+            border: none;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .category-tab.active {
+            background-color: #d4af37;
+            color: white;
+        }
+
+        .category-tab:hover:not(.active) {
+            background-color: #e9e9e9;
+        }
+
+        /* Room Cards */
+        .rooms-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .room-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .room-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .room-image {
+            height: 250px;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .room-content {
+            padding: 1.5rem;
+        }
+
+        .room-title {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+
+        .room-description {
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        .room-features {
+            display: flex;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .room-feature {
+            display: flex;
+            align-items: center;
+            margin-right: 1rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: #777;
+        }
+
+        .feature-icon {
+            margin-right: 0.3rem;
+            color: #d4af37;
+        }
+
+        .room-price {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        /* Featured Room */
+        .featured-room {
+            display: flex;
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 3rem;
+        }
+
+        .featured-image {
+            flex: 1;
+            min-height: 400px;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .featured-content {
+            flex: 1;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .featured-title {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .featured-description {
+            color: #666;
+            margin-bottom: 1.5rem;
+        }
+
+        .featured-features {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .featured-feature {
+            display: flex;
+            align-items: center;
+        }
+
+        /* Room Gallery */
+        .room-gallery {
+            margin-top: 2rem;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        .gallery-item {
+            height: 180px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: opacity 0.3s ease;
+        }
+
+        .gallery-item:hover {
+            opacity: 0.9;
+        }
+
+        /* Amenities */
+        .amenities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .amenity-card {
+            text-align: center;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .amenity-icon {
+            font-size: 2rem;
+            color: #d4af37;
+            margin-bottom: 1rem;
+        }
+
+        .amenity-title {
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        /* Testimonials */
+        .testimonials-carousel {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .testimonial {
+            text-align: center;
+        }
+
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+
+        .testimonial-author {
+            font-weight: 600;
+        }
+
+        .testimonial-role {
+            color: #777;
+        }
+
+        /* FAQ */
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            margin-bottom: 1.5rem;
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .faq-question {
+            padding: 1.5rem;
+            font-size: 1.2rem;
+            cursor: pointer;
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .faq-question:after {
+            content: "+";
+            font-size: 1.5rem;
+            color: #d4af37;
+        }
+
+        .faq-answer {
+            padding: 0 1.5rem 1.5rem;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #333;
+            color: white;
+            padding: 3rem 0;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section ul li a {
+            color: #ddd;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section ul li a:hover {
+            color: #d4af37;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-icon {
+            color: white;
+            font-size: 1.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .social-icon:hover {
+            color: #d4af37;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            margin-top: 2rem;
+            border-top: 1px solid #444;
+        }
+
+        /* Media Queries */
+        @media (max-width: 992px) {
+            .featured-room {
+                flex-direction: column;
+            }
+
+            .featured-image {
+                min-height: 300px;
+            }
+
+            .featured-features {
+                grid-template-columns: 1fr;
+            }
+
+            .room-gallery {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .nav-menu {
+                margin-top: 1rem;
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .nav-item {
+                margin: 0.5rem 0;
+                margin-left: 0;
+            }
+
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .rooms-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .room-gallery {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <div class="logo">NYC BISTRO</div>
+                <ul class="nav-menu">
+                    <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+                    <li class="nav-item"><a href="index.html#about" class="nav-link">About</a></li>
+                    <li class="nav-item"><a href="index.html#menu" class="nav-link">Menu</a></li>
+                    <li class="nav-item"><a href="rooms.html" class="nav-link">Rooms</a></li>
+                    <li class="nav-item"><a href="reservations.html" class="nav-link">Reservations</a></li>
+                    <li class="nav-item"><a href="index.html#contact" class="nav-link">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">Exclusive Dining Rooms & Event Spaces</h1>
+            <p class="hero-description">Experience privacy and elegance in our specially designed spaces</p>
+            <a href="reservations.html" class="btn btn-primary">Make a Reservation</a>
+            <a href="#featured" class="btn btn-secondary">Explore Our Rooms</a>
+        </div>
+    </section>
+
+    <section id="featured" class="section section-light">
+        <div class="container">
+            <h2 class="section-title">Our Signature Space</h2>
+            <p class="section-subtitle">Experience the pinnacle of dining luxury in our most prestigious room</p>
+
+            <div class="featured-room">
+                <div class="featured-image" style="background-image: url('/api/placeholder/800/600')"></div>
+                <div class="featured-content">
+                    <h3 class="featured-title">The Manhattan Suite</h3>
+                         <img src="/images/OIP (1).webp" alt="manhattan suite">
+
+                    <p class="featured-description">Our crown jewel, The Manhattan Suite offers panoramic views of the
+                        NYC skyline, private bar service, and a dedicated chef experience. Perfect for special
+                        celebrations, corporate events, or an unforgettable dining experience.</p>
+
+                    <div class="featured-features">
+                        <div class="featured-feature">
+                            <span class="feature-icon">👥</span>
+                            <span>Capacity: Up to 20 guests</span>
+                        </div>
+                        <div class="featured-feature">
+                            <span class="feature-icon">📋</span>
+                            <span>Custom menu options</span>
+                        </div>
+                        <div class="featured-feature">
+                            <span class="feature-icon">🍸</span>
+                            <span>Private bar</span>
+                        </div>
+                        <div class="featured-feature">
+                            <span class="feature-icon">🔊</span>
+                            <span>AV equipment available</span>
+                        </div>
+                    </div>
+
+                    <a href="reservations.html" class="btn btn-primary">Book This Room</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section section-dark">
+        <div class="container">
+            <h2 class="section-title">Our Dining Spaces</h2>
+            <p class="section-subtitle">From intimate gatherings to grand celebrations, we have the perfect space for
+                every occasion</p>
+
+            <div class="category-tabs">
+                <button class="category-tab active">All Rooms</button>
+                <button class="category-tab">Private Dining</button>
+                <button class="category-tab">Event Spaces</button>
+                <button class="category-tab">Chef's Tables</button>
+            </div>
+
+            <div class="rooms-grid">
+                <!-- Room 1 -->
+                <div class="room-card">
+                    <div class="room-image" style="background-image: url('/api/placeholder/600/400')"></div>
+                    <div class="room-content">
+                        <h3 class="room-title">The Wine Cellar</h3>
+                         <img src="/images/OIP.webp" alt="wine cellar">
+                        <p class="room-description">An intimate dining space surrounded by our extensive wine
+                            collection, perfect for wine lovers and small gatherings.</p>
+                        <div class="room-features">
+                            <div class="room-feature">
+                                <span class="feature-icon">👥</span>
+                                <span>6-12 Guests</span>
+                            </div>
+                            <div class="room-feature">
+                                <span class="feature-icon">🍷</span>
+                                <span>Wine Pairing</span>
+                            </div>
+                        </div>
+                        <p class="room-price">Starting at $1,500</p>
+                        <a href="reservations.html" class="btn btn-primary">Book Now</a>
+                    </div>
+                </div>
+
+                <!-- Room 2 -->
+                <div class="room-card">
+                    <div class="room-image" style="background-image: url('/api/placeholder/600/400')"></div>
+                    <div class="room-content">
+                        <h3 class="room-title">The Garden Room</h3>
+                         <img src="/images/download.webp" alt="Garden Room">
+
+                        <p class="room-description">A bright, airy space with living green walls and natural light,
+                            ideal for daytime events and brunches.</p>
+                        <div class="room-features">
+                            <div class="room-feature">
+                                <span class="feature-icon">👥</span>
+                                <span>10-25 Guests</span>
+                            </div>
+                            <div class="room-feature">
+                                <span class="feature-icon">🌿</span>
+                                <span>Natural Setting</span>
+                            </div>
+                        </div>
+                        <p class="room-price">Starting at $2,000</p>
+                        <a href="reservations.html" class="btn btn-primary">Book Now</a>
+                    </div>
+                </div>
+
+                <!-- Room 3 -->
+                <div class="room-card">
+                    <div class="room-image" style="background-image: url('/api/placeholder/600/400')"></div>
+                    <div class="room-content">
+                        <h3 class="room-title">Chef's Table</h3>
+                         <img src="/images/th.jpg" alt="Chef Table">
+
+                        <p class="room-description">Experience culinary artistry up close at our exclusive Chef's Table,
+                            with direct views into our kitchen.</p>
+                        <div class="room-features">
+                            <div class="room-feature">
+                                <span class="feature-icon">👥</span>
+                                <span>4-8 Guests</span>
+                            </div>
+                            <div class="room-feature">
+                                <span class="feature-icon">👨‍🍳</span>
+                                <span>Chef Interaction</span>
+                            </div>
+                        </div>
+                        <p class="room-price">Starting at $1,200</p>
+                        <a href="reservations.html" class="btn btn-primary">Book Now</a>
+                    </div>
+                </div>
+
+                <!-- Room 4 -->
+                <div class="room-card">
+                    <div class="room-image" style="background-image: url('/api/placeholder/600/400')"></div>
+                    <div class="room-content">
+                        <h3 class="room-title">The Broadway Room</h3>
+                         <img src="/images/OIP (3).webp" alt="wine cellar">
+
+                        <p class="room-description">Capture the essence of New York with Broadway-inspired décor and
+                            theatrical elements.</p>
+                        <div class="room-features">
+                            <div class="room-feature">
+                                <span class="feature-icon">👥</span>
+                                <span>15-30 Guests</span>
+                            </div>
+                            <div class="room-feature">
+                                <span class="feature-icon">🎭</span>
+                                <span>Theatrical Theme</span>
+                            </div>
+                        </div>
+                        <p class="room-price">Starting at $2,500</p>
+                        <a href="reservations.html" class="btn btn-primary">Book Now</a>
+                    </div>
+                </div>
+
+                <!-- Room 5 -->
+                <div class="room-card">
+                    <div class="room-image" style="background-image: url('/api/placeholder/600/400')"></div>
+                    <div class="room-content">
+                        <h3 class="room-title">The Skyline Lounge</h3>
+                         <img src="/images/OIP (2).webp" alt="skyline">
+
+                        <p class="room-description">Floor-to-ceiling windows offer spectacular views of the Manhattan
+                            skyline in this elegant lounge.</p>
+                        <div class="room-features">
+                            <div class="room-feature">
+                                <span class="feature-icon">👥</span>
+                                <span>20-40 Guests</span>
+                            </div>
+                            <div class="room-feature">
+                                <span class="feature-icon">🌆</span>
+                                <span>City Views</span>
+                            </div>
+                        </div>
+                        <p class="room-price">Starting at $3,000</p>
+                        <a href="reservations.html" class="btn btn-primary">Book Now</a>
+                    </div>
+                </div>
+
+                <!-- Room 6 -->
+                <div class="room-card">
+                    <div class="room-image" style="background-image: url('/api/placeholder/600/400')"></div>
+                    <div class="room-content">
+                        <h3 class="room-title">The Vintage Library</h3>
+                         <img src="/images/OIP (1).jpg" alt="vintage libraray">
+                        <p class="room-description">A sophisticated space with classic leather seating, wood paneling,
+                            and literary accents.</p>
+                        <div class="room-features">
+                            <div class="room-feature">
+                                <span class="feature-icon">👥</span>
+                                <span>8-16 Guests</span>
+                            </div>
+                            <div class="room-feature">
+                                <span class="feature-icon">📚</span>
+                                <span>Classic Ambiance</span>
+                            </div>
+                        </div>
+                        <p class="room-price">Starting at $1,800</p>
+                        <a href="reservations.html" class="btn btn-primary">Book Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section section-light">
+        <div class="container">
+            <h2 class="section-title">Room Spotlight</h2>
+            <p class="section-subtitle">Take a closer look at our most requested dining space</p>
+
+            <div class="featured-room">
+                <div class="featured-content">
+                    <h3 class="featured-title">The Garden Room</h3>
+                    <img src="/images/download.webp" alt="Garden Room">
+                    <p class="featured-description">Our Garden Room creates an oasis in the heart of the city with its
+                        living walls, natural light, and elegant greenhouse-inspired design. It's perfect for brunches,
+                        afternoon gatherings, and celebrations that call for a bright, airy atmosphere.</p>
+
+                    <div class="featured-features">
+                        <div class="featured-feature">
+                            <span class="feature-icon">👥</span>
+                            <span>Capacity: 10-25 guests</span>
+                        </div>
+                        <div class="featured-feature">
+                            <span class="feature-icon">🌿</span>
+                            <span>Living plant walls</span>
+                        </div>
+                        <div class="featured-feature">
+                            <span class="feature-icon">☀️</span>
+                            <span>Natural lighting</span>
+                        </div>
+                        <div class="featured-feature">
+                            <span class="feature-icon">🎵</span>
+                            <span>Private sound system</span>
+                        </div>
+                    </div>
+
+                    <div class="room-gallery">
+                        <div class="gallery-item" style="background-image: url('/api/placeholder/400/300')"></div>
+                        <div class="gallery-item" style="background-image: url('/api/placeholder/400/300')"></div>
+                        <div class="gallery-item" style="background-image: url('/api/placeholder/400/300')"></div>
+                    </div>
+
+                    <a href="reservations.html" class="btn btn-primary" style="margin-top: 1.5rem;">Book This Room</a>
+                </div>
+                <div class="featured-image" style="background-image: url('/api/placeholder/800/600')"></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section section-dark">
+        <div class="container">
+            <h2 class="section-title">Room Amenities</h2>
+            <p class="section-subtitle">Every private dining experience includes these premium features</p>
+
+            <div class="amenities-grid">
+                <div class="amenity-card">
+                    <div class="amenity-icon">🍽️</div>
+                    <h3 class="amenity-title">Custom Menus</h3>
+                    <p>Personalized menus tailored to your preferences and dietary requirements</p>
+                </div>
+
+                <div class="amenity-card">
+                    <div class="amenity-icon">👨‍🍳</div>
+                    <h3 class="amenity-title">Dedicated Staff</h3>
+                    <p>Enjoy attentive service from your own dedicated waitstaff and sommelier</p>
+                </div>
+
+                <div class="amenity-card">
+                    <div class="amenity-icon">🎵</div>
+                    <h3 class="amenity-title">Music Control</h3>
+                    <p>Set the perfect atmosphere with control over your room's music</p>
+                </div>
+
+                <div class="amenity-card">
+                    <div class="amenity-icon">🖼️</div>
+                    <h3 class="amenity-title">Decorating Options</h3>
+                    <p>Customize your space with floral arrangements and personalized touches</p>
+                </div>
+
+                <div class="amenity-card">
+                    <div class="amenity-icon">🔊</div>
+                    <h3 class="amenity-title">AV Equipment</h3>
+                    <p>Access to microphones, screens, and projectors for presentations</p>
+                </div>
+
+                <div class="amenity-card">
+                    <div class="amenity-icon">🍸</div>
+                    <h3 class="amenity-title">Bar Options</h3>
+                    <p>Choose from open bar, limited bar, or custom cocktail menus</p>
+                </div>
+
+                <div class="amenity-card">
+                    <div class="amenity-icon">📷</div>
+                    <h3 class="amenity-title">Photography</h3>
+                    <p>Professional photography services available upon request</p>
+                </div>
+
+                <div class="amenity-card">
+                    <div class="amenity-icon">🎂</div>
+                    <h3 class="amenity-title">Special Occasions</h3>
+                    <p>Custom cakes and celebratory touches for your special day</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section section-light">
+        <div class="container">
+            <h2 class="section-title">Guest Experiences</h2>
+            <p class="section-subtitle">What our clients say about their private dining experiences</p>
+
+            <div class="testimonials-carousel">
+                <div class="testimonial">
+                    <p class="testimonial-text">"We hosted our company dinner in The Manhattan Suite and it exceeded all
+                        expectations. The views were spectacular, the service impeccable, and the custom menu was
+                        exactly what we wanted. Our team is still talking about it months later."</p>
+                    <p class="testimonial-author">Sarah Johnson</p>
+                    <p class="testimonial-role">Director of Marketing, Tech Innovations Inc.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section section-dark">
+        <div class="container">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+
+            <div class="faq-container">
+                <div class="faq-item">
+                    <div class="faq-question">What is the minimum spend requirement?</div>
+                    <div class="faq-answer">
+                         <img src="/images/OIP.webp" alt="wine cellar">
+                        <p>Minimum spend requirements vary by room and day of the week. The Wine Cellar starts at
+                            $1,500, while our larger spaces like the Manhattan Suite have a minimum of $5,000. Weekend
+                            bookings typically have higher minimums.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">How far in advance should I book?</div>
+                    <div class="faq-answer">
+                        <p>We recommend booking at least 4-6 weeks in advance for small rooms and 2-3 months for our
+                            larger spaces. Popular dates like holidays and weekends often book 6 months in advance.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">Can I bring my own cake or decorations?</div>
+                    <div class="faq-answer">
+                        <p>Yes, you may bring your own cake for a $25 cutting fee. Outside decorations are welcome as
+                            long as they don't damage the space. Please discuss your decorating plans with our events
+                            team in advance.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">Do you offer special menus for dietary restrictions?</div>

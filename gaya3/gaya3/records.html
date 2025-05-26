@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Records</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .search-filter {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .search-filter input,
+        .search-filter select {
+            padding: 10px;
+            margin-right: 10px;
+            width: 200px;
+            border: 1px solid #ddd;
+        }
+
+        .search-filter button {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .search-filter button:hover {
+            background-color: #0056b3;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table,
+        th,
+        td {
+            border: 1px solid #ddd;
+        }
+
+        th,
+        td {
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #007BFF;
+            color: white;
+        }
+
+        .pagination {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .pagination button {
+            padding: 10px 20px;
+            margin: 0 5px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .pagination button:hover {
+            background-color: #0056b3;
+        }
+
+        .footer {
+            margin-top: 40px;
+            text-align: center;
+            font-size: 14px;
+            color: #555;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0, 0, 0);
+            background-color: rgba(0, 0, 0, 0.4);
+            padding-top: 60px;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>Customer Records</h1>
+
+        <!-- Search and Filter Section -->
+        <div class="search-filter">
+            <input type="text" id="search-name" placeholder="Search by Name or Booking ID" />
+            <select id="filter-status">
+                <option value="">Filter by Status</option>
+                <option value="Paid">Paid</option>
+                <option value="Unpaid">Unpaid</option>
+            </select>
+            <button onclick="searchRecords()">Search</button>
+        </div>
+
+        <!-- Records Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Booking ID</th>
+                    <th>Customer Name</th>
+                    <th>Room Type</th>
+                    <th>Check-in Date</th>
+                    <th>Check-out Date</th>
+                    <th>Total Amount</th>
+                    <th>Payment Status</th>
+                    <th>Payment Method</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="records-table-body">
+                <!-- Records will be dynamically inserted here -->
+            </tbody>
+        </table>
+
+        <!-- Pagination Section -->
+        <div class="pagination" id="pagination">
+            <button onclick="previousPage()">Previous</button>
+            <button onclick="nextPage()">Next</button>
+        </div>
+
+        <!-- Footer Section -->
+        <div class="footer">
+            <p>Thank you for using Hotel Management System!</p>
+        </div>
+    </div>
+
+    <!-- Modal for displaying record details -->
+    <div id="recordModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Booking Details</h2>
+            <p id="modal-name"></p>
+            <p id="modal-room-type"></p>
+            <p id="modal-checkin"></p>
+            <p id="modal-checkout"></p>
+            <p id="modal-total-amount"></p>
+            <p id="modal-payment-status"></p>
+            <p id="modal-payment-method"></p>
+        </div>
+    </div>
+
+    <script>
+        const records = [
+            { bookingId: 'ABC123', name: 'John Doe', roomType: 'Suite', checkin: '2025-04-01', checkout: '2025-04-06', totalAmount: '$610.00', paymentStatus: 'Unpaid', paymentMethod: 'Credit Card' },
+            { bookingId: 'ABC124', name: 'Jane Smith', roomType: 'Double', checkin: '2025-04-05', checkout: '2025-04-08', totalAmount: '$420.00', paymentStatus: 'Paid', paymentMethod: 'Cash' },
+            { bookingId: 'ABC125', name: 'Mike Johnson', roomType: 'Single', checkin: '2025-03-28', checkout: '2025-04-03', totalAmount: '$300.00', paymentStatus: 'Paid', paymentMethod: 'Online Payment' },
+            { bookingId: 'ABC126', name: 'Emily Davis', roomType: 'Suite', checkin: '2025-04-10', checkout: '2025-04-15', totalAmount: '$700.00', paymentStatus: 'Unpaid', paymentMethod: 'Credit Card' },
+            { bookingId: 'ABC127', name: 'David Brown', roomType: 'Single', checkin: '2025-04-02', checkout: '2025-04-04', totalAmount: '$350.00', paymentStatus: 'Paid', paymentMethod: 'Cash' },
+            { bookingId: 'ABC128', name: 'Sarah Miller', roomType: 'Double', checkin: '2025-03-29', checkout: '2025-04-05', totalAmount: '$480.00', paymentStatus: 'Unpaid', paymentMethod: 'Credit Card' },
+            { bookingId: 'ABC129', name: 'William Wilson', roomType: 'Suite', checkin: '2025-04-07', checkout: '2025-04-12', totalAmount: '$650.00', paymentStatus: 'Paid', paymentMethod: 'Online Payment' },
+            { bookingId: 'ABC130', name: 'Olivia Martinez', roomType: 'Single', checkin: '2025-04-03', checkout: '2025-04-08', totalAmount: '$375.00', paymentStatus: 'Paid', paymentMethod: 'Credit Card' },
+            { bookingId: 'ABC131', name: 'Liam Thomas', roomType: 'Double', checkin: '2025-04-05', checkout: '2025-04-09', totalAmount: '$410.00', paymentStatus: 'Unpaid', paymentMethod: 'Cash' },
+            { bookingId: 'ABC132', name: 'Sophia Garcia', roomType: 'Suite', checkin: '2025-04-06', checkout: '2025-04-11', totalAmount: '$700.00', paymentStatus: 'Paid', paymentMethod: 'Credit Card' },
+        ];
+
+        let currentPage = 1;
+        const recordsPerPage = 5;
+
+        function renderRecords() {
+            const start = (currentPage - 1) * recordsPerPage;
+            const end = start + recordsPerPage;
+            const filteredRecords = getFilteredRecords();
+            const recordsToDisplay = filteredRecords.slice(start, end);
+
+            const tableBody = document.getElementById('records-table-body');
+            tableBody.innerHTML = '';
+
+            recordsToDisplay.forEach(record => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${record.bookingId}</td>
+                    <td>${record.name}</td>
+                    <td>${record.roomType}</td>
+                    <td>${record.checkin}</td>
+                    <td>${record.checkout}</td>
+                    <td>${record.totalAmount}</td>
+                    <td>${record.paymentStatus}</td>
+                    <td>${record.paymentMethod}</td>
+                    <td><button onclick="viewRecord('${record.bookingId}')">View</button></td>
+                `;
+                tableBody.appendChild(row);
+            });
+
+            document.getElementById('pagination').style.display = filteredRecords.length > recordsPerPage ? 'block' : 'none';
+        }
+
+        function viewRecord(bookingId) {
+            const record = records.find(r => r.bookingId === bookingId);
+            if (record) {
+                document.getElementById('modal-name').textContent = `Name: ${record.name}`;
+                document.getElementById('modal-room-type').textContent = `Room Type: ${record.roomType}`;
+                document.getElementById('modal-checkin').textContent = `Check-in Date: ${record.checkin}`;
+                document.getElementById('modal-checkout').textContent = `Check-out Date: ${record.checkout}`;
+                document.getElementById('modal-total-amount').textContent = `Total Amount: ${record.totalAmount}`;
+                document.getElementById('modal-payment-status').textContent = `Payment Status: ${record.paymentStatus}`;
+                document.getElementById('modal-payment-method').textContent = `Payment Method: ${record.paymentMethod}`;
+
+                document.getElementById('recordModal').style.display = 'block';
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('recordModal').style.display = 'none';
+        }
+
+        function getFilteredRecords() {
+            const searchQuery = document.getElementById('search-name').value.toLowerCase();
+            const filterStatus = document.getElementById('filter-status').value;
+
+            return records.filter(record => {
+                const matchesSearch = record.name.toLowerCase().includes(searchQuery) || record.bookingId.toLowerCase().includes(searchQuery);
+                const matchesStatus = filterStatus ? record.paymentStatus.toLowerCase() === filterStatus.toLowerCase() : true;
+                return matchesSearch && matchesStatus;
+            });
+        }
+
+        function searchRecords() {
+            currentPage = 1;
+            renderRecords();
+        }
+
+        function previousPage() {
+            if (currentPage > 1) {
+                currentPage--;
+                renderRecords();
+            }
+        }
+
+        function nextPage() {
+            const filteredRecords = getFilteredRecords();
+            const totalPages = Math.ceil(filteredRecords.length / recordsPerPage);
+
+            if (currentPage < totalPages) {
+                currentPage++;
+                renderRecords();
+            }
+        }
+
+        // Initial rendering of records
+        renderRecords();
+    </script>
+</body>
+
+</html>
